@@ -6,7 +6,7 @@
 # --------------------------------------------------------
 
 from .nms.cpu_nms import nms, soft_nms
-# from .nms import py_cpu_nms
+from .nms.gpu_nms import gpu_nms
 import numpy as np
 
 
@@ -19,7 +19,7 @@ import numpy as np
 #     return keep
 
 
-def NMS(dets, thresh, nms_algorithm, soft=False):
+def NMS(dets, thresh, nms_algorithm, soft=False, usegpu=False, gpu_id=0):
     """Dispatch to either CPU or GPU NMS implementations."""
 
     if dets.shape[0] == 0:
@@ -27,4 +27,7 @@ def NMS(dets, thresh, nms_algorithm, soft=False):
     if soft:
         return soft_nms(np.ascontiguousarray(dets, dtype=np.float32), Nt=thresh, method=nms_algorithm)
     else:
-        return nms(dets, thresh)
+        if usegpu:
+            return gpu_nms(dets, thresh, device_id=gpu_id)
+        else:
+            return nms(dets, thresh)

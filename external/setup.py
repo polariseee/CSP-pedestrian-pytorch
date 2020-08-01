@@ -4,6 +4,7 @@ from setuptools import setup
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
 import numpy as np
+import pdb
 
 
 def find_in_path(name, path):
@@ -28,13 +29,14 @@ def locate_cuda():
     """
 
     # first check if the CUDAHOME env variable is in use
+
     if 'CUDAHOME' in os.environ:
         home = os.environ['CUDAHOME']
         nvcc = pjoin(home, 'bin', 'nvcc')
     else:
         # otherwise, search the PATH for NVCC
         default_path = pjoin(os.sep, 'usr', 'local', 'cuda', 'bin')
-        nvcc = find_in_path('nvcc', os.environ['PATH'] + os.pathsep + default_path)
+        nvcc = find_in_path('nvcc', default_path)
         if nvcc is None:
             raise EnvironmentError('The nvcc binary could not be '
                 'located in your $PATH. Either add it to your path, or set $CUDAHOME')
@@ -43,12 +45,13 @@ def locate_cuda():
     cudaconfig = {'home':home, 'nvcc':nvcc,
                   'include': pjoin(home, 'include'),
                   'lib64': pjoin(home, 'lib64')}
-    for k, v in cudaconfig.iteritems():
+    for k, v in iter(cudaconfig.items()):
         if not os.path.exists(v):
             raise EnvironmentError('The CUDA %s path could not be located in %s' % (k, v))
 
     return cudaconfig
 
+CUDA = locate_cuda()
 
 try:
     numpy_include = np.get_include()
@@ -106,7 +109,27 @@ ext_modules = [
         ["nms/cpu_nms.pyx"],
         extra_compile_args={'gcc': ["-Wno-cpp", "-Wno-unused-function"]},
         include_dirs=[numpy_include]
-    )
+    ),
+    Extension(
+        'nms.gpu_nms',
+        sources = ['nms/nms_kernel.cu', 'nms/gpu_nms.pyx'],
+        library_dirs = [CUDA['lib64']],
+        libraries = ['cudart'],
+        language = 'c++',
+        runtime_library_dirs = [CUDA['lib64']],
+        # This syntax is specific to this build system
+        # we're only going to use certain compiler args with nvcc
+        # and not with gcc the implementation of this trick is in
+        # customize_compiler()
+        extra_compile_args= {
+            'gcc': [],
+            'nvcc': [
+                '-arch=sm_30', '--ptxas-options=-v', '-c',
+                '--compiler-options', "'-fPIC'"
+                ]
+            },
+            include_dirs = [numpy_include, CUDA['include'], 'nms']
+        )
 ]
 
 setup(
