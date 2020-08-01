@@ -62,7 +62,7 @@ def kp_detection(cfg, ped_data, k_ind, emp_data, ngt_ind):
         img_data_aug['width'] = size_train[1]
         img_data_aug['height'] = size_train[0]
 
-        y_seman, y_height, y_offset = calc_gt_center(size_train, img_data_aug, down=8)
+        y_seman, y_height, y_offset = calc_gt_center(size_train, img_data_aug)
 
         x_img_batch.append(np.expand_dims(image, axis=0))
         y_seman_batch.append(np.expand_dims(y_seman, axis=0))
@@ -117,7 +117,7 @@ def kp_detection(cfg, ped_data, k_ind, emp_data, ngt_ind):
         img_data_aug['width'] = size_train[1]
         img_data_aug['height'] = size_train[0]
 
-        y_seman, y_height, y_offset = calc_gt_center(size_train, img_data_aug, down=8)
+        y_seman, y_height, y_offset = calc_gt_center(size_train, img_data_aug)
 
         x_img_batch.append(np.expand_dims(image, axis=0))
         y_seman_batch.append(np.expand_dims(y_seman, axis=0))
