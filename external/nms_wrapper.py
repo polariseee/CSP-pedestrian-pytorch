@@ -5,7 +5,7 @@
 # Written by Ross Girshick
 # --------------------------------------------------------
 
-from .cpu_nms import nms, soft_nms
+from .nms.cpu_nms import nms, soft_nms
 # from .nms import py_cpu_nms
 import numpy as np
 
