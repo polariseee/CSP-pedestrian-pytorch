@@ -70,6 +70,6 @@ note: This code only supports training with 1 GPU, and we will add multi GPUs su
 ### Evaluation
 1. Caltech
  
- You should use matlab to evaluate your results.
- Meantime, Caltech toolbox should be download from official website, and the toolbox is sorted in `./eval_caltech/toolbox`
+ You should use matlab to evaluate your results.Meantime, Caltech toolbox should be download from official website, and the toolbox is sorted in `./eval_caltech/toolbox`.
+ 
  Follow the [./eval_caltech/dbEval.m](./eval_caltech/dbEval.m) to get the Miss Rates of detections
