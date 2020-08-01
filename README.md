@@ -21,7 +21,7 @@ On Caltech validation set, we get the best result is 5.84 MR.
 ```
   git clone https://github.com/polariseee/CSP-pedestrian-pytorch.git
 ```
-2. Compile NMS. This code only supports cpu-nms currently.
+2. Compile NMS.
 
 ```
   cd ./external
