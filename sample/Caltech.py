@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import torch
 import copy
+import random
 
 from utils import *
 import pdb
@@ -20,13 +21,14 @@ def kp_detection(cfg, ped_data, k_ind, emp_data, ngt_ind):
 
     for b_ind in range(0, batchsize_ped):
 
+        if k_ind == 0:
+            random.shuffle(ped_data)
+
         img_data_aug = copy.deepcopy(ped_data[k_ind])
 
         assert len(img_data_aug['bboxes']) != 0
 
         k_ind = (k_ind + 1) % len(ped_data)
-        if k_ind == len(ped_data) - 1:
-            k_ind = 0
 
         filepath = img_data_aug['filepath']
         image = cv2.imread(filepath)  # [h, w, c]
@@ -71,13 +73,14 @@ def kp_detection(cfg, ped_data, k_ind, emp_data, ngt_ind):
 
     for b_ind in range(0, batchsize_emp):
 
+        if ngt_ind == 0:
+            random.shuffle(emp_data)
+
         img_data_aug = copy.deepcopy(emp_data[ngt_ind])
 
         assert len(img_data_aug['bboxes']) == 0
 
         ngt_ind = (ngt_ind + 1) % len(emp_data)
-        if ngt_ind == len(emp_data) - 1:
-            ngt_ind = 0
 
         filepath = img_data_aug['filepath']
         image = cv2.imread(filepath)  # [h, w, c]

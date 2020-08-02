@@ -9,7 +9,6 @@ import traceback
 import pickle
 import json
 import time
-import random
 
 from mmcv import Config
 from mmcv.utils import get_logger
@@ -35,8 +34,6 @@ def parse_args():
 def prefetch_data(cfg, queue, sample_data, ped_data=None, emp_data=None):
     ind = 0
     n_ind = 0
-    random.shuffle(ped_data)
-    random.shuffle(emp_data)
     print("start prefetching data...")
     while True:
         try:
