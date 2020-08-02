@@ -11,6 +11,7 @@ train_cfg = dict(
     num_epochs=120,
     iter_per_epoch=2000,
     alpha=0.999,
+    chunk_sizes=[8, 8],
     sample_module='Caltech',
     learning_rate=1e-4,
     display=20,
