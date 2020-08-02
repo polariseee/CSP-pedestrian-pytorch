@@ -44,7 +44,6 @@ backbone = dict(
     norm_eval=False,
     style='pytorch')
 kp_head = dict(
-    lateral_connect=False,
     in_channels=[256, 512, 1024, 2048],
     out_channels=256,
     start_level=1,
