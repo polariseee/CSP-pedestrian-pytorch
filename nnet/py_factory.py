@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 
 from models.detectors import SingleStageDetector
+from models.py_utils import DataParallel
 import pdb
 
 
@@ -37,6 +38,7 @@ class NetworkFactory(object):
         self.model   = DummyModule(nnet_module)
         self.loss    = nnet_module.loss
         self.network = Network(self.model, self.loss)
+        self.network = DataParallel(self.network, chunk_sizes=cfg.train_cfg.chunk_sizes)
 
         total_params = 0
         for params in self.model.parameters():
@@ -75,11 +77,12 @@ class NetworkFactory(object):
 
         self.optimizer.zero_grad()
         loss = self.network(xs, ys)
+        loss = loss.mean()
 
         loss.backward()
         self.optimizer.step()
 
-        for k, v in self.model.state_dict().items():
+        for k, v in self.network.module.model.state_dict().items():
             if k.find('num_batches_tracked') == -1:
                 self.teacher_dict[k] = self.train_cfg.alpha * self.teacher_dict[k]\
                                        + (1 - self.train_cfg.alpha) * v
