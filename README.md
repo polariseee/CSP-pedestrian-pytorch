@@ -60,7 +60,7 @@ On Caltech validation set, we get the best result is 5.84 MR.
 ```
   python train.py config/config.py
 ```
-note: This code only supports training with 1 GPU, and we will add multi GPUs support soon.
+note: If you use one gpu, please modify the parameter `chunk_sizes` in `config/config.py`.
 ### Test
 1. Caltech
 ```
