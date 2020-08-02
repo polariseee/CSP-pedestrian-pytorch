@@ -25,7 +25,6 @@ class KpHead(nn.Module):
         self.fusion_level = fusion_level
         self.end_level = end_level
         self.concat_level = self.end_level - self.start_level + 1
-        assert self.fusion_level >= self.start_level
 
         self.deconvs = nn.ModuleList()
         self.l2_norms = nn.ModuleList()
