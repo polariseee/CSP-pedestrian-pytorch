@@ -13,9 +13,9 @@ class Network(nn.Module):
         self.model = model
         self.loss  = loss
 
-    def forward(self, xs, ys, img_meta, **kwargs):
+    def forward(self, xs, ys, **kwargs):
         preds = self.model(*xs, **kwargs)
-        loss  = self.loss(preds, ys, img_meta, **kwargs)
+        loss  = self.loss(preds, ys, **kwargs)
         return loss
 
 
@@ -69,12 +69,12 @@ class NetworkFactory(object):
     def eval_mode(self):
         self.network.eval()
 
-    def train(self, xs, ys, img_meta, **kwargs):
+    def train(self, xs, ys, **kwargs):
         xs = [x.cuda(non_blocking=True) for x in xs]
         ys = [y.cuda(non_blocking=True) for y in ys]
 
         self.optimizer.zero_grad()
-        loss = self.network(xs, ys, img_meta)
+        loss = self.network(xs, ys)
 
         loss.backward()
         self.optimizer.step()
