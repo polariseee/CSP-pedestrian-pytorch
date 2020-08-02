@@ -4,13 +4,7 @@ dataset = dict(
     hyratio=0.5,
     size_train=(336, 448),
     size_test=(480, 640),
-    img_channel_mean=[103.939, 116.779, 123.68],
-    rand_color=True,
-    lighting=True,
-    eig_val=[0.2141788, 0.01817699, 0.00341571],
-    eig_vec=[[-0.58752847, -0.69563484, 0.41340352],
-             [-0.5832747, 0.00994535, -0.81221408],
-             [-0.56089297, 0.71832671, 0.41158938]])
+    img_channel_mean=[103.939, 116.779, 123.68])
 train_cfg = dict(
     opt_algo="adam",
     prefetch_size=5,
