@@ -19,12 +19,12 @@ import numpy as np
 #     return keep
 
 
-def NMS(dets, thresh, nms_algorithm, soft=False, usegpu=False, gpu_id=0):
+def NMS(dets, thresh, nms_algorithm, usegpu=False, gpu_id=0):
     """Dispatch to either CPU or GPU NMS implementations."""
 
     if dets.shape[0] == 0:
         return []
-    if soft:
+    if nms_algorithm == 1 or nms_algorithm == 2:
         return soft_nms(np.ascontiguousarray(dets, dtype=np.float32), Nt=thresh, method=nms_algorithm)
     else:
         if usegpu:
